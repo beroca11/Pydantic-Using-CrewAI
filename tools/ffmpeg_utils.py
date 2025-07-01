@@ -3,7 +3,26 @@ import asyncio
 import subprocess
 import tempfile
 from typing import List, Optional, Tuple
-from moviepy.editor import VideoFileClip, AudioFileClip, CompositeVideoClip, concatenate_videoclips
+
+try:
+    from moviepy.editor import VideoFileClip, AudioFileClip, CompositeVideoClip, concatenate_videoclips
+    MOVIEPY_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: MoviePy not available: {e}")
+    MOVIEPY_AVAILABLE = False
+    # Mock classes for when MoviePy is not available
+    class VideoFileClip:
+        def __init__(self, *args, **kwargs): pass
+        def close(self): pass
+    class AudioFileClip:
+        def __init__(self, *args, **kwargs): pass
+        def close(self): pass
+    class CompositeVideoClip:
+        def __init__(self, *args, **kwargs): pass
+        def close(self): pass
+    def concatenate_videoclips(*args, **kwargs): 
+        return VideoFileClip()
+
 from models import VoiceSegment, VideoSegment
 
 

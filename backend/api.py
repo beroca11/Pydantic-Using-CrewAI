@@ -34,9 +34,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize video generation crew
-crew = VideoGenerationCrew()
-
 # In-memory storage for jobs (replace with database in production)
 jobs: Dict[str, JobDetails] = {}
 
@@ -204,17 +201,17 @@ async def process_video_generation(job_id: str, request: GenerateVideoRequest):
         # Step 1: Generate script
         await update_job_progress(job_id, JobStatus.SCRIPT_GENERATING, 10, "Generating script from prompt")
         
-        script = await script_agent.generate_script(
+        script = script_agent.generate_script(
             prompt=request.prompt,
             style=request.style,
-            duration=request.duration,
-            language=request.language
+            voice_style=request.voice_style,
+            duration=request.duration
         )
         
         # Step 2: Generate voice
         await update_job_progress(job_id, JobStatus.VOICE_GENERATING, 30, "Generating voice narration")
         
-        voice_segments = await voice_agent.generate_voice_segments(
+        voice_segments = await voice_agent.generate_voice(
             script=script,
             voice_style=request.voice_style,
             language=request.language

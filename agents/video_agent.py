@@ -131,12 +131,21 @@ class VideoAgent:
             logger.info(f"Generating {num_segments} video segments using {chosen_backend.value}")
             
             # Generate videos using chosen backend
-            video_segments = await api.generate_video_segments(
-                scene_descriptions=scene_descriptions,
-                style=style,
-                duration_per_segment=duration_per_segment,
-                options=options.dict() if hasattr(options, 'dict') else options.__dict__
-            )
+            if chosen_backend == VideoBackend.POLLO:
+                # Pollo API doesn't accept options parameter
+                video_segments = await api.generate_video_segments(
+                    scene_descriptions=scene_descriptions,
+                    style=style,
+                    duration_per_segment=duration_per_segment
+                )
+            else:
+                # ImagineArt API accepts options parameter
+                video_segments = await api.generate_video_segments(
+                    scene_descriptions=scene_descriptions,
+                    style=style,
+                    duration_per_segment=duration_per_segment,
+                    options=options.dict() if hasattr(options, 'dict') else options.__dict__
+                )
             
             # Add backend information to segments
             for segment in video_segments:

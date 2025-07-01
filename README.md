@@ -12,7 +12,10 @@ cd ai-video-generator
 # 2. Run the automated setup
 python setup.py
 
-# 3. Edit .env with your API keys
+# 3. Configure environment variables
+cp env.sample.txt .env
+# Edit .env with your API keys
+
 # 4. Start the application
 python start.py
 ```
@@ -23,7 +26,7 @@ Open http://localhost:3000 and start creating videos! 🎬
 
 - **AI-Powered Script Generation**: Uses GPT-4/Claude to create engaging video scripts
 - **Voice Synthesis**: ElevenLabs integration for high-quality voice narration
-- **Video Generation**: Pollo.ai Veo 3 for creating stunning video content
+- **Multi-Backend Video Generation**: Pollo.ai Veo 3 and ImagineArt with automatic fallback
 - **Professional Editing**: FFmpeg-powered video editing and audio synchronization
 - **Cloud Storage**: Supabase/AWS S3 integration for video hosting
 - **Real-time Progress**: WebSocket-like polling for live generation updates
@@ -35,7 +38,7 @@ Open http://localhost:3000 and start creating videos! 🎬
 - **CrewAI Framework**: Orchestrates AI agents for modular video generation
 - **Script Agent**: Generates story scripts from user prompts
 - **Voice Agent**: Creates voice narration using ElevenLabs
-- **Video Agent**: Generates video segments using Pollo.ai Veo 3
+- **Video Agent**: Generates video segments using multiple backends (Pollo.ai Veo 3, ImagineArt)
 - **Editor Agent**: Merges audio and video using FFmpeg
 - **Uploader Agent**: Handles cloud storage uploads
 
@@ -80,8 +83,8 @@ Open http://localhost:3000 and start creating videos! 🎬
 3. **Set up environment variables**
    ```bash
    # The setup script creates .env automatically
-   # Or manually copy from example:
-   cp env.example .env
+   # Or manually copy from sample:
+   cp env.sample.txt .env
    # Edit .env with your API keys
    ```
 
@@ -120,22 +123,36 @@ The application will be available at:
 
 ### Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the root directory by copying from the sample file:
+
+```bash
+cp env.sample.txt .env
+```
+
+Then edit `.env` with your API keys:
 
 ```env
 # AI API Keys
 OPENAI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
-POLLO_API_KEY=your_pollo_api_key_here
 
-# Storage Configuration (Optional)
+# Video Generation APIs
+POLLO_API_KEY=your_pollo_api_key_here
+IMAGINEART_API_KEY=your_imagineart_api_key_here
+
+# Storage Configuration
 SUPABASE_URL=your_supabase_url_here
 SUPABASE_KEY=your_supabase_anon_key_here
 
-# AWS S3 (Alternative to Supabase)
+# AWS S3 (alternative to Supabase)
 AWS_ACCESS_KEY_ID=your_aws_access_key_here
 AWS_SECRET_ACCESS_KEY=your_aws_secret_key_here
 AWS_S3_BUCKET=your_s3_bucket_name_here
+AWS_REGION=us-east-1
+
+# Redis for background tasks
+REDIS_URL=redis://localhost:6379
 
 # App Configuration
 DEBUG=True
@@ -143,12 +160,24 @@ HOST=0.0.0.0
 PORT=8000
 ```
 
+**Required API Keys:**
+- **OpenAI**: For script generation using GPT-4/GPT-3.5
+- **Anthropic**: Alternative to OpenAI for script generation using Claude
+- **ElevenLabs**: For high-quality voice synthesis and narration
+- **Pollo.ai**: For AI video generation using Veo 3 model
+- **ImagineArt**: Alternative video generation backend
+
+**Optional Services:**
+- **Supabase**: For cloud storage and database (recommended)
+- **AWS S3**: Alternative cloud storage option
+- **Redis**: For background task management (optional for development)
+
 ### Mock Mode
 
 The application includes mock implementations for testing without API keys:
 - **Mock Script Agent**: Generates placeholder scripts
 - **Mock ElevenLabs**: Returns mock audio segments
-- **Mock Pollo.ai**: Returns placeholder video URLs
+- **Mock Video Backends**: Returns placeholder video URLs for Pollo.ai and ImagineArt
 - **Mock FFmpeg**: Creates mock video files
 
 ## 🎯 Usage

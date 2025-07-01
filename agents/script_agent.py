@@ -1,6 +1,6 @@
 from crewai import Agent, Task
 from typing import List, Dict, Any
-import openai
+from openai import OpenAI
 import os
 from models import GeneratedScript, ScriptSegment, VideoStyle, VoiceStyle
 
@@ -13,7 +13,8 @@ class ScriptAgent:
         if not self.openai_api_key:
             raise ValueError("OPENAI_API_KEY not found in environment variables")
         
-        openai.api_key = self.openai_api_key
+        # Initialize OpenAI client with new v1.0.0+ format
+        self.client = OpenAI(api_key=self.openai_api_key)
         
         # Create CrewAI agent
         self.agent = Agent(
@@ -37,7 +38,8 @@ class ScriptAgent:
         try:
             system_prompt = f"Create a {duration}-second video script in {style.value} style with {voice_style.value} narration."
             
-            response = openai.ChatCompletion.create(
+            # Use new OpenAI v1.0.0+ format
+            response = self.client.chat.completions.create(
                 model="gpt-4",
                 messages=[
                     {"role": "system", "content": system_prompt},

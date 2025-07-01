@@ -2,8 +2,8 @@ import os
 import asyncio
 import httpx
 from typing import List, Optional
-from elevenlabs import generate, save, set_api_key
-from elevenlabs.api import History
+from elevenlabs.client import ElevenLabs
+from elevenlabs import play, save
 from models import VoiceSegment, VoiceStyle
 
 
@@ -14,7 +14,9 @@ class ElevenLabsAPI:
         api_key = os.getenv("ELEVENLABS_API_KEY")
         if not api_key:
             raise ValueError("ELEVENLABS_API_KEY not found in environment variables")
-        set_api_key(api_key)
+        
+        # Initialize the new ElevenLabs client
+        self.client = ElevenLabs(api_key=api_key)
         
         # Voice ID mappings for different styles
         self.voice_ids = {
@@ -49,11 +51,12 @@ class ElevenLabsAPI:
             current_time = 0.0
             
             for i, text in enumerate(text_segments):
-                # Generate audio for this segment
-                audio = generate(
+                # Generate audio for this segment using new API
+                audio = self.client.text_to_speech.convert(
                     text=text,
-                    voice=voice_id,
-                    model="eleven_multilingual_v2"
+                    voice_id=voice_id,
+                    model_id="eleven_multilingual_v2",
+                    output_format="mp3_44100_128"
                 )
                 
                 # Save audio to temporary file
@@ -84,14 +87,14 @@ class ElevenLabsAPI:
     async def get_available_voices(self) -> List[dict]:
         """Get list of available voices from ElevenLabs"""
         try:
-            history = History.from_api()
-            voices = history.voices
+            response = self.client.voices.search()
+            voices = response.voices
             return [
                 {
                     "id": voice.voice_id,
                     "name": voice.name,
-                    "category": voice.category,
-                    "description": voice.description
+                    "category": getattr(voice, 'category', 'general'),
+                    "description": getattr(voice, 'description', '')
                 }
                 for voice in voices
             ]

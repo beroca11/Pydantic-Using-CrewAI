@@ -55,7 +55,7 @@ export interface VideoResult {
 }
 
 export const generateVideo = async (request: VideoRequest): Promise<JobResponse> => {
-  const response = await api.post('/api/generate', {
+  const response = await api.post('/generate', {
     prompt: request.prompt,
     style: request.style,
     voice_style: request.voiceStyle,
@@ -73,27 +73,27 @@ export const generateVideo = async (request: VideoRequest): Promise<JobResponse>
 }
 
 export const getJobStatus = async (jobId: string): Promise<JobProgress> => {
-  const response = await api.get(`/api/job/${jobId}`)
+  const response = await api.get(`/job/${jobId}`)
   return response.data
 }
 
 export const getJobResult = async (jobId: string): Promise<VideoResult> => {
-  const response = await api.get(`/api/job/${jobId}/result`)
+  const response = await api.get(`/job/${jobId}/result`)
   return response.data
 }
 
 export const listBackends = async (): Promise<any> => {
-  const response = await api.get('/api/backends')
+  const response = await api.get('/backends')
   return response.data
 }
 
 export const listModels = async (): Promise<any> => {
-  const response = await api.get('/api/models')
+  const response = await api.get('/models')
   return response.data
 }
 
 export const testBackend = async (backend: string, prompt?: string): Promise<any> => {
-  const response = await api.post('/api/test-backend', {
+  const response = await api.post('/test-backend', {
     backend,
     prompt: prompt || 'A beautiful sunset over the ocean'
   })
@@ -101,16 +101,16 @@ export const testBackend = async (backend: string, prompt?: string): Promise<any
 }
 
 export const listJobs = async (): Promise<Record<string, JobProgress>> => {
-  const response = await api.get('/api/jobs')
+  const response = await api.get('/jobs')
   return response.data
 }
 
 export const deleteJob = async (jobId: string): Promise<void> => {
-  await api.delete(`/api/jobs/${jobId}`)
+  await api.delete(`/jobs/${jobId}`)
 }
 
 export const downloadVideo = async (jobId: string): Promise<string> => {
-  const response = await api.get(`/api/download/${jobId}`)
+  const response = await api.get(`/download/${jobId}`)
   if (response.data.video_url) {
     return response.data.video_url
   }
