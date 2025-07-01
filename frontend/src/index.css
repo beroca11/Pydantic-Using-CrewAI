@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-deep-dark min-h-screen;
+  }
+
+  /* Custom scrollbar with professional dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-600;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-sunset-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-sunset-600;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply relative bg-button-gradient text-white font-semibold py-3 px-6 rounded-xl 
+           shadow-glow-subtle hover:shadow-glow-amber transition-all duration-300 
+           hover:scale-105 active:scale-95 overflow-hidden border border-sunset-700/20;
+  }
+  
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+  }
+  
+  .btn-primary:hover::before {
+    @apply opacity-5;
+  }
+  
+  .btn-secondary {
+    @apply bg-dark-600/80 backdrop-blur-sm hover:bg-dark-500/80 text-gray-300 border border-dark-700/50 
+           font-semibold py-3 px-6 rounded-xl shadow-soft hover:shadow-medium 
+           transition-all duration-300 hover:scale-105 active:scale-95;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-sunset-600/60 text-sunset-400 hover:bg-sunset-600/20 
+           hover:text-sunset-300 font-semibold py-3 px-6 rounded-xl 
+           transition-all duration-300 hover:scale-105 active:scale-95;
+  }
+  
+  .btn-success {
+    @apply bg-gradient-to-r from-success-600 to-success-700 text-white 
+           font-semibold py-3 px-6 rounded-xl shadow-medium 
+           hover:shadow-strong transition-all duration-300 
+           hover:scale-105 active:scale-95;
+  }
+  
+  .btn-danger {
+    @apply bg-gradient-to-r from-danger-500 to-danger-600 text-white 
+           font-semibold py-3 px-6 rounded-xl shadow-medium 
+           hover:shadow-strong transition-all duration-300 
+           hover:scale-105 active:scale-95;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border border-dark-700/50 rounded-xl bg-dark-600/50 backdrop-blur-sm
+           focus:outline-none focus:ring-2 focus:ring-sunset-600/50 focus:border-sunset-600/30
+           transition-all duration-300 shadow-inner-dark hover:bg-dark-500/50 text-gray-200
+           placeholder:text-gray-500;
+  }
+  
+  .input-field:focus {
+    @apply transform scale-[1.02] bg-dark-500/60;
+  }
+  
+  .card {
+    @apply bg-dark-600/40 backdrop-blur-lg rounded-2xl shadow-strong hover:shadow-glow-subtle
+           border border-dark-700/30 transition-all duration-300 
+           hover:scale-[1.01] animate-fade-in;
+  }
+  
+  .card-hover {
+    @apply hover:shadow-glow-amber hover:-translate-y-1;
+  }
+  
+  .glass-card {
+    @apply bg-dark-600/30 backdrop-blur-xl border border-dark-700/40 
+           rounded-2xl shadow-soft;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-sunset-500 to-amber-500 
+           bg-clip-text text-transparent;
+  }
+  
+  .gradient-border {
+    @apply relative bg-gradient-to-r from-sunset-600 to-amber-600 p-0.5 rounded-xl;
+  }
+  
+  .gradient-border > * {
+    @apply bg-dark-600 rounded-xl;
+  }
+  
+  .status-indicator {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .status-pending {
+    @apply bg-amber-900/30 text-amber-300 border border-amber-800/20;
+  }
+  
+  .status-processing {
+    @apply bg-sunset-900/30 text-sunset-300 border border-sunset-800/20;
+  }
+  
+  .status-completed {
+    @apply bg-success-900/30 text-success-300 border border-success-800/20;
+  }
+  
+  .status-failed {
+    @apply bg-danger-900/30 text-danger-300 border border-danger-800/20;
+  }
+  
+  .progress-bar {
+    @apply w-full bg-dark-700/60 rounded-full h-3 overflow-hidden shadow-inner-dark;
+  }
+  
+  .progress-fill {
+    @apply h-full bg-button-gradient rounded-full transition-all duration-500 
+           relative overflow-hidden;
+  }
+  
+  .progress-fill::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
+           animate-shimmer;
+  }
+  
+  .feature-card {
+    @apply relative bg-dark-600/30 backdrop-blur-lg rounded-2xl p-6 shadow-soft 
+           hover:shadow-glow-subtle transition-all duration-300 
+           hover:-translate-y-2 border border-dark-700/20;
+  }
+  
+  .feature-icon {
+    @apply w-12 h-12 bg-button-gradient rounded-xl flex items-center justify-center 
+           text-white shadow-glow-subtle group-hover:scale-110 transition-transform duration-300;
+  }
+  
+  .loading-spinner {
+    @apply inline-block animate-spin rounded-full border-2 border-dark-700/50 
+           border-t-sunset-600;
+  }
+  
+  .hero-section {
+    @apply text-center mb-16 animate-slide-up;
+  }
+  
+  .section-divider {
+    @apply w-24 h-1 bg-button-gradient rounded-full mx-auto mb-8 shadow-glow-subtle;
+  }
+  
+  /* Animations for elements */
+  .animate-stagger {
+    animation-delay: var(--stagger-delay, 0s);
+  }
+  
+  /* Video player enhancements */
+  .video-container {
+    @apply relative bg-dark-400 rounded-2xl overflow-hidden shadow-strong border border-dark-700/30;
+  }
+  
+  .video-container::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-t from-dark-400/60 to-transparent pointer-events-none z-10;
+  }
+  
+  /* Custom range slider with professional styling */
+  input[type="range"] {
+    @apply appearance-none bg-transparent cursor-pointer w-full;
+  }
+  
+  input[type="range"]::-webkit-slider-track {
+    @apply bg-dark-700/60 h-2 rounded-full shadow-inner-dark;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    @apply appearance-none h-5 w-5 bg-button-gradient rounded-full shadow-glow-subtle
+           hover:scale-110 transition-transform duration-200 cursor-grab active:cursor-grabbing
+           border border-sunset-700/30;
+  }
+  
+  input[type="range"]::-moz-range-track {
+    @apply bg-dark-700/60 h-2 rounded-full border-none;
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    @apply h-5 w-5 bg-button-gradient rounded-full shadow-glow-subtle border-none
+           hover:scale-110 transition-transform duration-200 cursor-grab;
+  }
+
+  /* Professional text colors for dark theme */
+  .text-primary {
+    @apply text-gray-200;
+  }
+
+  .text-secondary {
+    @apply text-gray-400;
+  }
+
+  .text-muted {
+    @apply text-gray-500;
+  }
+
+  .text-accent {
+    @apply text-sunset-400;
+  }
+
+  /* Enhanced selection styles */
+  ::selection {
+    @apply bg-sunset-600/30 text-sunset-200;
+  }
+
+  /* Focus styles for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-sunset-600/50 focus:ring-offset-2 focus:ring-offset-dark-400;
+  }
+
+  /* Professional form styles */
+  select {
+    @apply bg-dark-600/50 border border-dark-700/50 text-gray-200 rounded-xl px-4 py-3
+           focus:outline-none focus:ring-2 focus:ring-sunset-600/50 focus:border-sunset-600/30
+           transition-all duration-300;
+  }
+
+  select option {
+    @apply bg-dark-600 text-gray-200;
+  }
+
+  /* Radio button enhancements */
+  input[type="radio"]:checked + label {
+    @apply bg-sunset-900/20 border-sunset-600/50;
+  }
+} 
